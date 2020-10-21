@@ -14,9 +14,13 @@ use Language;
 use PrestaShopException;
 use Shop;
 use Tab;
-use Tools;
 
-class Module
+/**
+ * Class Installer
+ *
+ * @package Scwaall\YziPrestaShopModule
+ */
+class Installer
 {
     /** @var \Module $module The PrestaShop module's instance. */
     private $module;
@@ -41,7 +45,7 @@ class Module
      *
      * @param \Module $module The PrestaShop module's instance.
      * @param array $hookList The module's hook list.
-     * @return Module
+     * @return Installer
      */
     public static function getInstance(\Module $module, array $hookList = array())
     {
@@ -93,7 +97,7 @@ class Module
         if (!$parentId) {
             $parentId = Tab::getIdFromClassName((
                 'AdminParentModules'
-                . (Tools::version_compare(_PS_VERSION_, '1.7', '<') ? null : 'Sf')
+                . (\Tools::version_compare(_PS_VERSION_, '1.7', '<') ? null : 'Sf')
             ));
         }
 
@@ -101,7 +105,7 @@ class Module
             $tab->name[$language['id_lang']] = $this->module->displayName;
         }
 
-        $tab->class_name = "Admin{$this->getNameForControllers()}Index";
+        $tab->class_name = Controller::getAdminName('Index', get_class($this->module), $this->module->author);
         $tab->module = $this->module->name;
         $tab->id_parent = $parentId;
         $tab->active = true;
@@ -155,31 +159,6 @@ class Module
         }
 
         return true;
-    }
-
-    /**
-     * Gets the module's name for controllers.
-     *
-     * @return string
-     */
-    public function getNameForControllers()
-    {
-        $moduleClassName = str_replace($this->module->author . '_', '', get_class($this->module));
-        $moduleClassNamePartList = explode('_', $moduleClassName);
-        $nameForControllers = Tools::ucfirst(Tools::strtolower($this->module->author));
-
-        if (empty($moduleClassNamePartList)) {
-            $nameForControllers .= $moduleClassName;
-            return $nameForControllers;
-        }
-
-        foreach ($moduleClassNamePartList as $moduleClassNamePart) {
-            if ($moduleClassNamePart != $this->module->author) {
-                $nameForControllers .= $moduleClassNamePart;
-            }
-        }
-
-        return $nameForControllers;
     }
 
     /**
