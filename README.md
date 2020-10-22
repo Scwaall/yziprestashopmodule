@@ -18,7 +18,7 @@ class MyModule extends Module
      */
     public function install()
     {
-        $installer = new \Scwaall\YziPrestaShopModule\Module($this, self::HOOK_LIST);
+        $installer = new \Scwaall\YziPrestaShopModule\Module\Installer($this, self::HOOK_LIST);
 
         return (
             parent::install()
@@ -36,7 +36,7 @@ class MyModule extends Module
      */
     public function uninstall()
     {
-        $installer = new \Scwaall\YziPrestaShopModule\Module($this, self::HOOK_LIST);
+        $installer = new \Scwaall\YziPrestaShopModule\Module\Installer($this, self::HOOK_LIST);
 
         return (
             $installer->uninstallTab()
