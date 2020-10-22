@@ -35,4 +35,15 @@ class ModuleAdminController extends \ModuleAdminController
         $this->bootstrap = true;
         parent::__construct();
     }
+
+    /**
+     * Gets an admin template.
+     *
+     * @param string $template The template's path from the admin folder.
+     * @return string
+     */
+    public function getTemplate($template)
+    {
+        return $this->getTemplatePath() . $template . '.tpl';
+    }
 }
