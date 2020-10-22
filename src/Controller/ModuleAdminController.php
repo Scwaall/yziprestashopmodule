@@ -34,6 +34,7 @@ class ModuleAdminController extends \ModuleAdminController
         $this->context = Context::getContext();
         $this->bootstrap = true;
         parent::__construct();
+        $this->context->smarty->assign('controller', $this);
     }
 
     /**
