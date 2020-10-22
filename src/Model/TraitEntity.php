@@ -11,7 +11,7 @@
 namespace Scwaall\YziPrestaShopModule\Model;
 
 /**
- * Class AbstractEntity
+ * Class TraitEntity
  *
  * @package Scwaall\YziPrestaShopModule\Model
  */
