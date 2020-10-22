@@ -15,11 +15,11 @@ use Module;
 use PrestaShopException;
 
 /**
- * Class ModuleAdminController
+ * Class AbstractModuleAdminController
  *
  * @package Scwaall\YziPrestaShopModule\Controller
  */
-class ModuleAdminController extends \ModuleAdminController
+abstract class AbstractModuleAdminController extends \ModuleAdminController
 {
     /** @var Module $module The module's instance. */
     public $module;
