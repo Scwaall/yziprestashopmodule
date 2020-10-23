@@ -12,6 +12,7 @@ namespace Scwaall\YziPrestaShopModule\Controller;
 
 use Context;
 use Module;
+use ModuleAdminController;
 use PrestaShopException;
 
 /**
@@ -19,7 +20,7 @@ use PrestaShopException;
  *
  * @package Scwaall\YziPrestaShopModule\Controller
  */
-abstract class AbstractModuleAdminController extends \ModuleAdminController
+abstract class AbstractModuleAdminController extends ModuleAdminController
 {
     /** @var Module $module The module's instance. */
     public $module;
