@@ -37,9 +37,9 @@ class Installer extends Package
             Shop::setContext(Shop::CONTEXT_ALL);
         }
 
-        return (
-            $this->installHookList()
-        );
+        return (bool)array_product(array(
+            $this->installHookList(),
+        ));
     }
 
     /**
@@ -49,16 +49,16 @@ class Installer extends Package
      */
     public function uninstall()
     {
-        return (
-            $this->uninstallHookList()
-        );
+        return (bool)array_product(array(
+            $this->uninstallHookList(),
+        ));
     }
 
     /**
      * Installs the module's tab.
      *
      * @param int $parentId The parent tab's ID.
-     * @return bool|int
+     * @return bool
      */
     public function installTab($parentId = 0)
     {
@@ -81,7 +81,7 @@ class Installer extends Package
         $tab->module = $this->getModule()->name;
         $tab->id_parent = $parentId;
         $tab->active = true;
-        return $tab->add();
+        return (bool)$tab->add();
     }
 
     /**
@@ -91,13 +91,15 @@ class Installer extends Package
      */
     public function uninstallTab()
     {
+        $result = true;
+
         foreach (Tab::getCollectionFromModule($this->getModule()->name) as $tab) {
             if (!$tab->delete()) {
-                return false;
+                $result &= false;
             }
         }
 
-        return true;
+        return $result;
     }
 
     /**
@@ -108,13 +110,15 @@ class Installer extends Package
      */
     public function installHookList()
     {
+        $result = true;
+
         foreach ($this->getHookList() as $hook) {
             if (!$this->getModule()->registerHook($hook)) {
-                return false;
+                $result &= false;
             }
         }
 
-        return true;
+        return $result;
     }
 
     /**
@@ -124,12 +128,14 @@ class Installer extends Package
      */
     public function uninstallHookList()
     {
+        $result = true;
+
         foreach ($this->getHookList() as $hook) {
             if (!$this->getModule()->unregisterHook($hook)) {
-                return false;
+                $result &= false;
             }
         }
 
-        return true;
+        return $result;
     }
 }
