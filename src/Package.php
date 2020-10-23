@@ -31,24 +31,21 @@ class Package
      * Module constructor.
      *
      * @param \Module $module The PrestaShop module's instance.
-     * @param array $hookList The module's hook list.
      */
-    public function __construct(\Module $module, array $hookList = array())
+    public function __construct(\Module $module)
     {
         $this->setModule($module);
-        $this->setHookList($hookList);
     }
 
     /**
      * Gets an instance of this object.
      *
      * @param \Module $module The PrestaShop module's instance.
-     * @param array $hookList The module's hook list.
      * @return Package
      */
-    public static function getInstance(\Module $module, array $hookList = array())
+    public static function getInstance(\Module $module)
     {
-        return new self($module, $hookList);
+        return new self($module);
     }
 
     /**
@@ -89,7 +86,7 @@ class Package
      * @param array $hookList The module's hook list.
      * @return $this
      */
-    private function setHookList(array $hookList)
+    public function setHookList(array $hookList)
     {
         $this->hookList = $hookList;
         return $this;
