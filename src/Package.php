@@ -10,6 +10,8 @@
 
 namespace Scwaall\YziPrestaShopModule;
 
+use Module;
+
 /**
  * Class Package
  *
@@ -21,7 +23,7 @@ class Package
     const AUTHOR = 'Scwaall';
     const VERSION = '0.0.1-dev';
 
-    /** @var \Module $module The PrestaShop module's instance. */
+    /** @var Module $module The PrestaShop module's instance. */
     private $module;
 
     /** @var array $hookList The module's hook list. */
@@ -30,9 +32,9 @@ class Package
     /**
      * Module constructor.
      *
-     * @param \Module $module The PrestaShop module's instance.
+     * @param Module $module The PrestaShop module's instance.
      */
-    public function __construct(\Module $module)
+    public function __construct(Module $module)
     {
         $this->setModule($module);
     }
@@ -40,10 +42,10 @@ class Package
     /**
      * Gets an instance of this object.
      *
-     * @param \Module $module The PrestaShop module's instance.
+     * @param Module $module The PrestaShop module's instance.
      * @return Package
      */
-    public static function getInstance(\Module $module)
+    public static function getInstance(Module $module)
     {
         return new self($module);
     }
@@ -51,7 +53,7 @@ class Package
     /**
      * Gets the PrestaShop module's instance.
      *
-     * @return \Module
+     * @return Module
      */
     public function getModule()
     {
@@ -61,10 +63,10 @@ class Package
     /**
      * Sets the PrestaShop module's instance.
      *
-     * @param \Module $module The PrestaShop module's instance.
+     * @param Module $module The PrestaShop module's instance.
      * @return $this
      */
-    private function setModule(\Module $module)
+    private function setModule(Module $module)
     {
         $this->module = $module;
         return $this;
