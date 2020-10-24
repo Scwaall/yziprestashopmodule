@@ -17,6 +17,12 @@ namespace Scwaall\YziPrestaShopModule\Model;
  */
 trait TraitEntity
 {
+    /** @var string $date_add The date when the entity was created. */
+    public $date_add;
+
+    /** @var string $date_upd The date when the entity was updated. */
+    public $date_upd;
+
     /**
      * Gets the entity's ID.
      *
