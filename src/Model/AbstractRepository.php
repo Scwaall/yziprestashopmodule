@@ -56,7 +56,7 @@ abstract class AbstractRepository extends ObjectModel
      */
     public static function reset()
     {
-        return static::install() && static::uninstall();
+        return static::uninstall() && static::install();
     }
 
     /**
