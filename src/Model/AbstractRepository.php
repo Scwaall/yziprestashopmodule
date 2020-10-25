@@ -18,6 +18,7 @@ use Exception;
 use ObjectModelCore as ObjectModel; // TODO: Replace ObjectModelCore by ObjectModel.
 use PrestaShopDatabaseException;
 use PrestaShopException;
+use Scwaall\YziPrestaShopModule\Tools;
 
 /**
  * Class AbstractRepository
@@ -438,37 +439,31 @@ abstract class AbstractRepository extends ObjectModel
             return $query;
         }
 
-        if (is_string(static::getUniqueKey())) {
-            if (!array_key_exists(static::getUniqueKey(), static::$definition['fields'])) {
+        $uniqueKeyName = '';
+        $uniqueKeyFieldList = static::getUniqueKey();
+        if (Tools::isAssociativeArray($uniqueKeyFieldList)) {
+            $uniqueKeyName = array_keys($uniqueKeyFieldList)[0];
+            $uniqueKeyFieldList = $uniqueKeyFieldList[$uniqueKeyName];
+        }
+        if (!is_array($uniqueKeyFieldList)) {
+            $uniqueKeyFieldList = explode(',', $uniqueKeyFieldList);
+        }
+
+        $query .= 'UNIQUE KEY ' . trim($uniqueKeyName) . '(';
+
+        foreach ($uniqueKeyFieldList as $fieldName) {
+            if (!isset(static::$definition['fields'][$fieldName])) {
                 throw new Exception(sprintf(
                     'The field \'%s\' is not defined in the fields list for \'%s\'!',
-                    static::getUniqueKey(),
+                    $fieldName,
                     static::getTable(true)
                 ));
             }
 
-            $query .= 'UNIQUE KEY (' . static::getUniqueKey() . ')';
-        } elseif (is_array(static::getUniqueKey())) {
-            $query .= 'UNIQUE KEY (';
-            foreach (static::getUniqueKey() as $uniqueKeyName) {
-                if (!array_key_exists($uniqueKeyName, static::$definition['fields'])) {
-                    throw new Exception(sprintf(
-                        'The field \'%s\' is not defined in the fields list for \'%s\'!',
-                        $uniqueKeyName,
-                        static::getTable(true)
-                    ));
-                }
-
-                $query .= $uniqueKeyName . ', ';
-            }
-            $query = rtrim($query, ', ') . ')';
-        } else {
-            throw new Exception(sprintf(
-                'The unique key must be an array or a string for \'%s\'!',
-                static::getTable(true)
-            ));
+            $query .= trim($fieldName) . ', ';
         }
 
+        $query = rtrim($query, ', ') . ')';
         return $query;
     }
 }
