@@ -112,6 +112,21 @@ abstract class AbstractRepository extends ObjectModel
     }
 
     /**
+     * Deletes an entity from the database by its ID.
+     *
+     * @param int $id The entity's ID.
+     * @return bool
+     * @throws Exception
+     */
+    public static function deleteById($id)
+    {
+        return Db::getInstance()->delete(
+            static::getTable(),
+            pSQL(static::getPrimaryKey()) . ' = ' . (int)$id
+        );
+    }
+
+    /**
      * Gets the last creation's date of the repository.
      *
      * @return bool|false|null|string
