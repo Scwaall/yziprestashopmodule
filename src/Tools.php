@@ -137,4 +137,50 @@ class Tools
 
         return json_decode($data, $assoc, $depth, $options);
     }
+
+    /**
+     * Defines if a var is a fully array.
+     *
+     * @param mixed $var The var to test.
+     * @return bool
+     */
+    public static function isFullyArray($var)
+    {
+        return is_array($var) && !empty($var);
+    }
+
+    /**
+     * Defines if a var is an associative array.
+     *
+     * @param mixed $var The var to test.
+     * @return bool
+     */
+    public static function isAssociativeArray($var)
+    {
+        return self::isFullyArray($var) && array_keys($var) !== range(0, (count($var) - 1));
+    }
+
+    /**
+     * Defines if a key is a sub-array.
+     *
+     * @param array $array The parent's array.
+     * @param int|string $key The key for which we need to test the value.
+     * @return bool
+     */
+    public static function isSubArray($array, $key)
+    {
+        return self::isFullyArray($array) && is_array($array[$key]);
+    }
+
+    /**
+     * Defines if a key is a fully sub-array.
+     *
+     * @param array $array The parent's array.
+     * @param int|string $key The key for which we need to test the value.
+     * @return bool
+     */
+    public static function isFullySubArray($array, $key)
+    {
+        return self::isSubArray($array, $key) && self::isFullyArray($array[$key]);
+    }
 }
