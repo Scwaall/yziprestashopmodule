@@ -169,7 +169,7 @@ class Tools
      */
     public static function isSubArray($array, $key)
     {
-        return self::isFullyArray($array) && is_array($array[$key]);
+        return self::isFullyArray($array) && isset($array[$key]) && is_array($array[$key]);
     }
 
     /**
@@ -182,5 +182,17 @@ class Tools
     public static function isFullySubArray($array, $key)
     {
         return self::isSubArray($array, $key) && self::isFullyArray($array[$key]);
+    }
+
+    /**
+     * Defines if a key is a fully array's value.
+     *
+     * @param array $array The parent's array.
+     * @param int|string $key The key for which we need to test the value.
+     * @return bool
+     */
+    public static function isFullyArrayValue($array, $key)
+    {
+        return self::isFullyArray($array) && isset($array[$key]) && !empty($array[$key]);
     }
 }
