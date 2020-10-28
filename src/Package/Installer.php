@@ -13,6 +13,7 @@ namespace Scwaall\YziPrestaShopModule\Package;
 use Language;
 use PrestaShopException;
 use Scwaall\YziPrestaShopModule\Controller;
+use Scwaall\YziPrestaShopModule\Module;
 use Scwaall\YziPrestaShopModule\Package;
 use Shop;
 use Tab;
@@ -39,6 +40,7 @@ class Installer extends Package
 
         return (bool)array_product(array(
             $this->installHookList(),
+            $this->installRepositoryList(),
         ));
     }
 
@@ -51,6 +53,7 @@ class Installer extends Package
     {
         return (bool)array_product(array(
             $this->uninstallHookList(),
+            $this->uninstallRepositoryList(),
         ));
     }
 
@@ -133,6 +136,42 @@ class Installer extends Package
         foreach ($this->getHookList() as $hook) {
             if (!$this->getModule()->unregisterHook($hook)) {
                 $result &= false;
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Installs the module's repository list to the database.
+     *
+     * @return bool
+     */
+    public function installRepositoryList()
+    {
+        $result = true;
+
+        foreach (Module::getRepositoryList() as $repository) {
+            if (class_exists($repository) && method_exists($repository, 'install')) {
+                $result &= (bool)$repository::install();
+            }
+        }
+
+        return $result;
+    }
+
+    /**
+     * Uninstalls the module's repository list from the database.
+     *
+     * @return bool
+     */
+    public function uninstallRepositoryList()
+    {
+        $result = true;
+
+        foreach (Module::getRepositoryList() as $repository) {
+            if (class_exists($repository) && method_exists($repository, 'uninstall')) {
+                $result &= (bool)$repository::uninstall();
             }
         }
 
