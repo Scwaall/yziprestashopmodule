@@ -60,6 +60,18 @@ class Module
     }
 
     /**
+     * Gets the module's URL like http(s)://my_shop_domain.com/modules/my_module_name.
+     *
+     * @param bool $http If true, returns domain name with protocol.
+     * @param bool $entities Ff true, converts special chars to HTML entities.
+     * @return string
+     */
+    public static function getUrl($http = true, $entities = false)
+    {
+        return \Tools::getShopDomainSsl($http, $entities) . '/modules/' . self::getPrefix();
+    }
+
+    /**
      * Gets the module's prefix.
      *
      * @param bool $toUppercase Defines whether to get the module's prefix in the uppercase format.
