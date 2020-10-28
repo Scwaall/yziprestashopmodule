@@ -38,4 +38,43 @@ class Module
 
         return $list;
     }
+
+    /**
+     * Gets the module's dir.
+     *
+     * @return string
+     */
+    public static function getDir()
+    {
+        return dirname(__FILE__, 5);
+    }
+
+    /**
+     * Gets the module's path.
+     *
+     * @return string
+     */
+    public static function getPath()
+    {
+        return self::getDir() . '/';
+    }
+
+    /**
+     * Gets the module's prefix.
+     *
+     * @param bool $toUppercase Defines whether to get the module's prefix in the uppercase format.
+     * @return bool|string
+     */
+    public static function getPrefix($toUppercase = false)
+    {
+        $pathPartList = explode('/', self::getDir());
+        $prefix = end($pathPartList);
+
+        if ($toUppercase) {
+            $prefix = \Tools::strtoupper($prefix);
+        }
+
+        unset($pathPartList);
+        return $prefix;
+    }
 }
