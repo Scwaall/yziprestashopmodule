@@ -1,5 +1,7 @@
-# YziPrestaShopModule
+# YziPrestaShopModule 0.0.1-dev
 Package for PrestaShop modules.
+
+Support: scwaall@gmail.com.
 
 ## Install a PrestaShop module
 
@@ -18,15 +20,21 @@ class MyModule extends Module
      */
     public function install()
     {
-        $installer = new \Scwaall\YziPrestaShopModule\Module\Installer($this, self::HOOK_LIST);
+        $installer = new \Scwaall\YziPrestaShopModule\Installer($this);
+        $installer->setHookList(self::HOOK_LIST);
 
-        return (
-            parent::install()
-            && $installer->install()
-            // Use this method if you want a tab under "Modules" PrestaShop's tab.
-            // You can add a parameter with a parent's tab ID if you want to place your tab in a specific place.
-            && $installer->installTab()
-        );
+        try {
+            return (
+                parent::install()
+                && $installer->install()
+                // Use this method if you want a tab under "Modules" PrestaShop's tab.
+                // You can add a parameter with a parent's tab ID if you want to place your tab in a specific place.
+                && $installer->installTab()
+            );
+        } catch (PrestaShopException $e) {
+            $this->_errors[] = Tools::displayError($e->getMessage());
+            return false;
+        }
     }
 
     /**
@@ -36,7 +44,8 @@ class MyModule extends Module
      */
     public function uninstall()
     {
-        $installer = new \Scwaall\YziPrestaShopModule\Module\Installer($this, self::HOOK_LIST);
+        $installer = new \Scwaall\YziPrestaShopModule\Installer($this);
+        $installer->setHookList(self::HOOK_LIST);
 
         return (
             $installer->uninstallTab()
